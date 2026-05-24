@@ -3,7 +3,7 @@ import { MdAdd, MdSearch, MdFilterList, MdDownload, MdVisibility, MdBusiness } f
 import { toast } from 'react-toastify'
 import { vendorService } from '../../services/vendor.service'
 import Table, { Pagination } from '../../components/Table/Table'
-import Modal from '../../components/Modal/Modal'
+import Modal from '../../components/Modal/Modal.jsx'
 import { Button } from '../../components/Buttons/Buttons'
 import StatusBadge from '../../components/Buttons/StatusBadge'
 import { FormField, Input, Select, FormRow } from '../../components/Forms/Forms'
