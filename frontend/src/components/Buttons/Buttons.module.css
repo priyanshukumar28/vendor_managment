@@ -1,0 +1,104 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition), box-shadow var(--transition), opacity var(--transition), transform var(--transition);
+  white-space: nowrap;
+}
+
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* Sizes */
+.sm { padding: 6px 14px; font-size: 12px; }
+.md { padding: 9px 18px; font-size: 13.5px; }
+.lg { padding: 12px 24px; font-size: 14.5px; }
+
+/* Variants */
+.primary {
+  background: var(--brand-blue);
+  color: white;
+}
+.primary:hover:not(:disabled) {
+  background: #1358BE;
+  box-shadow: 0 4px 12px rgba(21, 101, 216, 0.3);
+}
+
+.secondary {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+}
+.secondary:hover:not(:disabled) {
+  background: var(--border-light);
+}
+
+.danger {
+  background: var(--status-danger);
+  color: white;
+}
+.danger:hover:not(:disabled) {
+  background: #DC2626;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+}
+.ghost:hover:not(:disabled) {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.outline {
+  background: transparent;
+  color: var(--brand-blue);
+  border: 1.5px solid var(--brand-blue);
+}
+.outline:hover:not(:disabled) {
+  background: #EBF2FF;
+}
+
+/* Loading */
+.loading { opacity: 0.75; pointer-events: none; }
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Icon button */
+.iconBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.iconBtn.ghost {
+  background: transparent;
+  color: var(--text-muted);
+}
+.iconBtn.ghost:hover {
+  background: var(--bg-primary);
+  color: var(--brand-blue);
+}
