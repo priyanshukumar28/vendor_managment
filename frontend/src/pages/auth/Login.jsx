@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { MdEmail, MdLock, MdArrowForward } from 'react-icons/md'
 import { toast } from 'react-toastify'
 import { useAuth } from '../../context/AuthContext'
-import Logo from '../../assets/Logo'
+import logo from '../../assets/aa_logo.png'
 import styles from './Login.module.css'
 
 const ROLES = [
@@ -49,7 +49,15 @@ const Login = () => {
       {/* Left Panel */}
       <div className={styles.leftPanel}>
         <div className={styles.leftContent}>
-          <Logo size={40} showText />
+          <img
+            src={logo}
+            alt="Across Assist"
+            style={{
+              width: "180px",
+              height: "auto",
+              marginBottom: "20px"
+            }}
+          />
           <div className={styles.heroText}>
             <h1>Elevating Enterprise <span>Operations Management.</span></h1>
             <p>The unified portal for streamlined vendor governance, project lifecycle tracking, and development operational excellence.</p>
