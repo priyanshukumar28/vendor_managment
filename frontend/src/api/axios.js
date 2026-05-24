@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create axios instance
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "https://vendor-managment-r829.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },
