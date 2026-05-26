@@ -26,23 +26,48 @@ const Login = () => {
   const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!form.email || !form.password) {
-      toast.error('Please enter your email and password.')
-      return
-    }
-    setLoading(true)
-    try {
-      await login({ ...form, role: selectedRole })
-      toast.success('Welcome back!')
-      navigate(from, { replace: true })
-    } catch (err) {
-      const msg = err?.response?.data?.message || 'Invalid credentials. Please try again.'
-      toast.error(msg)
-    } finally {
-      setLoading(false)
-    }
+  e.preventDefault()
+
+  if (!form.email || !form.password) {
+    toast.error('Please enter your email and password.')
+    return
   }
+
+  setLoading(true)
+
+  try {
+    const user = await login(form)
+
+    toast.success('Welcome back!')
+
+    // Role-based redirect
+    switch (user.role) {
+      case 'SUPER_ADMIN':
+        navigate('/dashboard', { replace: true })
+        break
+
+      case 'VENDOR_ADMIN':
+        navigate('/dashboard', { replace: true })
+        break
+
+      case 'DEVELOPER':
+        navigate('/dashboard', { replace: true })
+        break
+
+      default:
+        navigate('/dashboard', { replace: true })
+    }
+
+  } catch (err) {
+    const msg =
+      err?.response?.data?.message ||
+      'Invalid credentials. Please try again.'
+
+    toast.error(msg)
+  } finally {
+    setLoading(false)
+  }
+}
 
   return (
     <div className={styles.page}>
