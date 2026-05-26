@@ -1,54 +1,55 @@
 const cors = require("cors");
 const express = require("express");
-const { authRouter, authenticate, authorize, ROLES } = require("./modules/auth");
-const { vendorRouter } = require('./modules/vendors');
-const { userRouter } = require('./modules/users');
-const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = require('./config/swagger');
 
+const { authRouter, authenticate, authorize, ROLES } = require("./modules/auth");
+const { vendorRouter } = require("./modules/vendors");
+const { userRouter } = require("./modules/users");
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
 
 const app = express();
 
-// ─── CORS FIRST ──────────────────────────
+
+// ─── Global Middleware ─────────────────────────────
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*", // for Swagger + frontend testing
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-
-{/* <Swagger module> */}
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+// ─── Swagger ───────────────────────────────────────
 
 app.use(
-  '/api-docs',
+  "/api-docs",
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec)
 );
 
-app.use('/api/auth', authRouter);
-app.use('/api/vendors', vendorRouter);
-app.use('/api/users', userRouter);
 
-// ─── Global Middleware ────────────────────────────────────────────────────────
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// ─── API Routes ────────────────────────────────────
 
-// ─── Auth Routes ──────────────────────────────────────────────────────────────
 app.use("/api/auth", authRouter);
-// --- Vendor Routes ------//
-app.use('/api/vendors', vendorRouter);
-// -- User Routes ----//
-app.use('/api/users', userRouter);
+app.use("/api/vendors", vendorRouter);
+app.use("/api/users", userRouter);
 
-// ─── Example Protected Routes ─────────────────────────────────────────────────
+
+// ─── Example Protected Routes ──────────────────────
 
 // Any authenticated user
 app.get("/api/dashboard", authenticate, (req, res) => {
-  res.json({ success: true, message: `Welcome, ${req.user.name}!` });
+  res.json({
+    success: true,
+    message: `Welcome, ${req.user.name}!`,
+  });
 });
 
 // SUPER_ADMIN only
@@ -57,17 +58,26 @@ app.get(
   authenticate,
   authorize(ROLES.SUPER_ADMIN),
   (req, res) => {
-    res.json({ success: true, message: "Super admin area." });
+    res.json({
+      success: true,
+      message: "Super admin area.",
+    });
   }
 );
 
-// SUPER_ADMIN and VENDOR_ADMIN
+// SUPER_ADMIN + VENDOR_ADMIN
 app.get(
   "/api/vendor/settings",
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.VENDOR_ADMIN),
+  authorize(
+    ROLES.SUPER_ADMIN,
+    ROLES.VENDOR_ADMIN
+  ),
   (req, res) => {
-    res.json({ success: true, message: "Vendor settings." });
+    res.json({
+      success: true,
+      message: "Vendor settings.",
+    });
   }
 );
 
@@ -75,28 +85,46 @@ app.get(
 app.get(
   "/api/projects",
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.VENDOR_ADMIN, ROLES.DEVELOPER),
+  authorize(
+    ROLES.SUPER_ADMIN,
+    ROLES.VENDOR_ADMIN,
+    ROLES.DEVELOPER
+  ),
   (req, res) => {
-    res.json({ success: true, message: "Projects list." });
+    res.json({
+      success: true,
+      message: "Projects list.",
+    });
   }
 );
 
-app.get('/', (req, res) => {
-  res.json({ success: true, message: 'Vendor Management API is running.' });
-});
 
-// ─── Global Error Handler ─────────────────────────────────────────────────────
-// eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
-  console.error("Unhandled error:", err);
-  res.status(err.statusCode || 500).json({
-    success: false,
-    message: err.message || "Internal server error.",
+// ─── Root Route ────────────────────────────────────
+
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Vendor Management API is running."
   });
 });
 
-// ─── Start ────────────────────────────────────────────────────────────────────
+
+// ─── Error Handler ─────────────────────────────────
+
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Internal server error",
+  });
+});
+
+
+// ─── Server ────────────────────────────────────────
+
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

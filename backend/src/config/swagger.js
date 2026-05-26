@@ -10,13 +10,14 @@ const options = {
     },
 
     servers: [
-      {
-        url: process.env.NODE_ENV === 'production'
-          ? 'https://vendor-managment-r829.onrender.com/api'
-          : 'http://localhost:3000/api',
-
-        description: 'API Server'
-      }
+        {
+          url: 'https://vendor-managment-r829.onrender.com/api',
+          description: 'Production API'
+        },
+        {
+          url: 'http://localhost:3000/api',
+          description: 'Local Development'
+        }
     ],
 
     components: {
