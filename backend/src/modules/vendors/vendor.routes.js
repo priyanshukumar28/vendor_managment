@@ -15,6 +15,45 @@ const router = express.Router();
 // All vendor routes require a valid JWT — apply once at the top
 router.use(authenticate);
 
+
+/**
+ * @swagger
+ * /vendors:
+ *   post:
+ *     summary: Create Vendor
+ *     tags:
+ *       - Vendors
+ *
+ *     security:
+ *       - bearerAuth: []
+ *
+ *     requestBody:
+ *       required: true
+ *
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Across Assist Vendor
+ *
+ *               email:
+ *                 type: string
+ *                 example: vendor@test.com
+ *
+ *     responses:
+ *       201:
+ *         description: Vendor created
+ *
+ *       409:
+ *         description: Vendor already exists
+ */
+
+
+
+
 // ─── Routes ───────────────────────────────────────────────────────────────────
 
 /**
@@ -28,6 +67,40 @@ router.post(
   validateCreateVendor,
   vendorController.createVendor
 );
+
+/**
+ * @swagger
+ * /vendors:
+ *   get:
+ *     summary: Get all vendors
+ *     tags:
+ *       - Vendors
+ *
+ *     security:
+ *       - bearerAuth: []
+ *
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *
+ *     responses:
+ *       200:
+ *         description: Vendors fetched successfully
+ */
+
+
 
 /**
  * @route  GET /api/vendors

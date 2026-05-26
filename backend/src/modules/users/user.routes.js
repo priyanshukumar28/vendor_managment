@@ -15,6 +15,49 @@ const router = express.Router();
 // All user-management routes require a valid JWT
 router.use(authenticate);
 
+
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Create user
+ *     tags:
+ *       - Users
+ *
+ *     security:
+ *       - bearerAuth: []
+ *
+ *     requestBody:
+ *       required: true
+ *
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *
+ *             properties:
+ *               name:
+ *                 type: string
+ *
+ *               email:
+ *                 type: string
+ *
+ *               password:
+ *                 type: string
+ *
+ *               role:
+ *                 type: string
+ *
+ *               vendorId:
+ *                 type: string
+ *
+ *     responses:
+ *       201:
+ *         description: User created
+ */
+
+
 // ─── Routes ───────────────────────────────────────────────────────────────────
 
 /**

@@ -3,6 +3,9 @@ const express = require("express");
 const { authRouter, authenticate, authorize, ROLES } = require("./modules/auth");
 const { vendorRouter } = require('./modules/vendors');
 const { userRouter } = require('./modules/users');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
+
 
 const app = express();
 
@@ -15,6 +18,20 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+
+{/* <Swagger module> */}
+app.use(express.json());
+
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec)
+);
+
+app.use('/api/auth', authRouter);
+app.use('/api/vendors', vendorRouter);
+app.use('/api/users', userRouter);
 
 // ─── Global Middleware ────────────────────────────────────────────────────────
 app.use(express.json());

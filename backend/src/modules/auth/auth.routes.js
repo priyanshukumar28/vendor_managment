@@ -17,6 +17,41 @@ const router = express.Router();
 router.post("/register", validateRegister, register);
 
 /**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Login user
+ *     tags:
+ *       - Authentication
+ *
+ *     requestBody:
+ *       required: true
+ *
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: admin@test.com
+ *
+ *               password:
+ *                 type: string
+ *                 example: admin123
+ *
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *
+ *       401:
+ *         description: Invalid credentials
+ */
+
+
+
+
+/**
  * @route  POST /api/auth/login
  * @desc   Authenticate credentials and receive JWT tokens
  * @access Public
