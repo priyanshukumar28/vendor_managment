@@ -7,7 +7,7 @@ import {
   MdBusiness, MdGroups
 } from 'react-icons/md'
 import { useAuth, ROLES } from '../../context/AuthContext'
-import Logo from '../../assets/Logo'
+import Logo from '../../assets/images/aa_logo.png'
 import styles from './Sidebar.module.css'
 
 const NAV_CONFIG = {
@@ -52,7 +52,12 @@ const Sidebar = () => {
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
       {/* Logo */}
       <div className={styles.logoArea}>
-        <Logo size={30} showText collapsed={collapsed} />
+        <img
+            src={Logo}
+            alt="Logo"
+            width={30}
+            height={30}
+          />
         <button className={styles.collapseBtn} onClick={() => setCollapsed(c => !c)} title={collapsed ? 'Expand' : 'Collapse'}>
           {collapsed ? <MdMenu size={18} /> : <MdChevronLeft size={18} />}
         </button>
