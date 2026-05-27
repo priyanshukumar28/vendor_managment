@@ -120,3 +120,14 @@
   background: #FEF2F2;
   color: #DC2626;
 }
+
+.logo {
+  width: 180px;
+  height: auto;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+.collapsedLogo {
+  width: 40px;
+}

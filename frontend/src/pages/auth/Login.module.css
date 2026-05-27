@@ -184,6 +184,14 @@
   gap: 20px;
 }
 
+.loginLogo {
+  width: 320px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 24px;
+}
+
 .formHeader h2 {
   font-size: 28px;
   font-weight: 800;

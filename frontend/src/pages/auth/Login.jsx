@@ -75,13 +75,9 @@ const Login = () => {
       <div className={styles.leftPanel}>
         <div className={styles.leftContent}>
           <img
-            src={logo}
+            src={Logo}
             alt="Across Assist"
-            style={{
-              width: "180px",
-              height: "auto",
-              marginBottom: "20px"
-            }}
+            className={styles.loginLogo}
           />
           <div className={styles.heroText}>
             <h1>Elevating Enterprise <span>Operations Management.</span></h1>

@@ -51,17 +51,21 @@ const Sidebar = () => {
   return (
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
       {/* Logo */}
-      <div className={styles.logoArea}>
-        <img
-            src={Logo}
-            alt="Logo"
-            width={30}
-            height={30}
-          />
-        <button className={styles.collapseBtn} onClick={() => setCollapsed(c => !c)} title={collapsed ? 'Expand' : 'Collapse'}>
-          {collapsed ? <MdMenu size={18} /> : <MdChevronLeft size={18} />}
-        </button>
-      </div>
+    <div className={styles.logoArea}>
+      <img
+        src={Logo}
+        alt="Across Assist"
+        className={`${styles.logo} ${collapsed ? styles.collapsedLogo : ""}`}
+      />
+
+      <button
+        className={styles.collapseBtn}
+        onClick={() => setCollapsed(c => !c)}
+        title={collapsed ? "Expand" : "Collapse"}
+      >
+        {collapsed ? <MdMenu size={18} /> : <MdChevronLeft size={18} />}
+      </button>
+    </div>
 
       {/* Nav */}
       <nav className={styles.nav}>
