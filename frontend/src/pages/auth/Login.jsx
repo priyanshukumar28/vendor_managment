@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { MdEmail, MdLock, MdArrowForward } from 'react-icons/md'
 import { toast } from 'react-toastify'
 import { useAuth } from '../../context/AuthContext'
-import logo from '../../assets/images/aa_logo.png'
+import Logo from '../../assets/images/aa_logo.png'
 import styles from './Login.module.css'
 
 const ROLES = [
