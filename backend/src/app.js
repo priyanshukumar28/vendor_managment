@@ -15,7 +15,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "*", // for Swagger + frontend testing
+    origin: process.env.FRONTEND_URL,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
