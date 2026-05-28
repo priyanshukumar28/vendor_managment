@@ -69,7 +69,7 @@ const createVendor = async ({ name, email }) => {
       name, 
       email,
 
-      vendorDisplayID,
+      vendorDisplayId,
       vendorCode,
      },
   });
