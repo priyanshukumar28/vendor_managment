@@ -74,7 +74,13 @@ model User {
 model Project {
   id          String @id @default(uuid())
 
+  projectDisplayId String? @unique
+
   name        String
+  description     String?
+
+  status          TaskStatus @default(PENDING)
+  
   deadline    DateTime?
 
   vendorId    String

@@ -4,6 +4,7 @@ const express = require("express");
 const { authRouter, authenticate, authorize, ROLES } = require("./modules/auth");
 const { vendorRouter } = require("./modules/vendors");
 const { userRouter } = require("./modules/users");
+const { projectRouter } = require('./modules/projects');
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
@@ -28,6 +29,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/api/projects', projectRouter);
 
 // ─── Swagger ───────────────────────────────────────
 
