@@ -39,6 +39,8 @@ const findVendorOrFail = async (id) => {
  * @returns {Promise<Object>} Created vendor
  */
 const createVendor = async ({ name, email }) => {
+
+  //Check existing vendor
   const existing = await prisma.vendor.findFirst({ where: {
      email 
     } 
@@ -48,8 +50,28 @@ const createVendor = async ({ name, email }) => {
     throw createError("A vendor with this email already exists.", 409);
   }
 
+  // Generate Vendor Display ID
+  const vendorCount = await prisma.vendor.count();
+
+  const vendorDisplayID =
+    `AA-VEN-${String(vendorCount + 1).padStart(4, "0")}`;
+
+  // Generate Vendor Code
+  const vendorCode = name
+    .replace(/[^a-zA-Z]/g, "")
+    .substring(0, 3)
+    .toUpperCase();
+
+    // Create Vendor
+  
   const vendor = await prisma.vendor.create({
-    data: { name, email },
+    data: { 
+      name, 
+      email,
+
+      vendorDisplayID,
+      vendorCode,
+     },
   });
 
   return vendor;

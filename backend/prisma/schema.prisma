@@ -37,6 +37,10 @@ enum Priority {
 
 model Vendor {
   id          String @id @default(uuid())
+  
+  vendorDisplayId   String @unique
+  vendorCode        String @unique
+
   name        String
   email       String? @unique
   users       User[]
@@ -48,9 +52,13 @@ model Vendor {
 
 model User {
   id          String @id @default(uuid())
+
+  employeeId    String @unique
+
   name        String
   email       String @unique
   password    String
+  
   role        Role
 
   vendorId    String?

@@ -88,15 +88,64 @@ const createUser = async ({ name, email, password, role, vendorId }, caller) => 
 
   const hashedPassword = await hashPassword(password);
 
-  const user = await prisma.user.create({
-    data: {
-      name,
-      email,
-      password: hashedPassword,
-      role,
-      vendorId: resolvedVendorId,
-    },
+  let employeeId = null;
+
+// SUPER ADMIN
+if (role === "SUPER_ADMIN") {
+
+  const count = await prisma.user.count({
+    where: {
+      role: "SUPER_ADMIN"
+    }
   });
+
+  employeeId =
+    `AA-SA-${String(count + 1).padStart(4, "0")}`;
+}
+
+// VENDOR ADMIN
+if (role === "VENDOR_ADMIN") {
+
+  const count = await prisma.user.count({
+    where: {
+      role: "VENDOR_ADMIN"
+    }
+  });
+
+  employeeId =
+    `AA-VA-${String(count + 1).padStart(4, "0")}`;
+}
+
+// DEVELOPER
+if (role === "DEVELOPER") {
+
+  const vendor = await prisma.vendor.findUnique({
+    where: {
+      id: vendorId
+    }
+  });
+
+  const count = await prisma.user.count({
+    where: {
+      role: "DEVELOPER",
+      vendorId
+    }
+  });
+
+  employeeId =
+    `AA-DEV-${vendor.vendorCode}-${String(count + 1).padStart(3, "0")}`;
+}
+
+const user = await prisma.user.create({
+  data: {
+    name,
+    email,
+    password: hashedPassword,
+    role,
+    vendorId,
+    employeeId
+  }
+});
 
   return sanitizeUser(user);
 };
