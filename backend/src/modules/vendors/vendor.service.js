@@ -53,7 +53,7 @@ const createVendor = async ({ name, email }) => {
   // Generate Vendor Display ID
   const vendorCount = await prisma.vendor.count();
 
-  const vendorDisplayID =
+  const vendorDisplayId =
     `AA-VEN-${String(vendorCount + 1).padStart(4, "0")}`;
 
   // Generate Vendor Code
