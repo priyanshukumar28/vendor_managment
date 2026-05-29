@@ -30,20 +30,27 @@ const VendorList = () => {
   const [errors, setErrors] = useState({})
 
   const fetchVendors = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await vendorService.getVendors({ page, limit: PAGE_SIZE, search })
-      const list = res?.data || res?.vendors || res || []
-      const count = res?.total || res?.count || (Array.isArray(list) ? list.length : 0)
-      setVendors(Array.isArray(list) ? list : [])
-      setTotal(count)
-    } catch (e) {
-      toast.error('Failed to fetch vendors')
-      setVendors([])
-    } finally {
-      setLoading(false)
-    }
-  }, [page, search])
+  setLoading(true)
+  try {
+    const res = await vendorService.getVendors({ page, limit: PAGE_SIZE, search })
+
+    console.log("API RESPONSE:", res)
+
+    // ✅ FIX HERE
+    const list = res?.data?.data?.vendors || []
+    const count = res?.data?.data?.total || list.length
+
+    setVendors(list)
+    setTotal(count)
+
+  } catch (e) {
+    console.error(e)
+    toast.error('Failed to fetch vendors')
+    setVendors([])
+  } finally {
+    setLoading(false)
+  }
+}, [page, search])
 
   useEffect(() => { fetchVendors() }, [fetchVendors])
 
@@ -117,7 +124,7 @@ const VendorList = () => {
       render: (val) => <StatusBadge status={val || 'active'} />
     },
     {
-      key: '_id',
+      key: 'id',
       label: 'Actions',
       render: (val, row) => (
         <button className={styles.viewBtn} title="View vendor">
@@ -204,7 +211,7 @@ const VendorList = () => {
           <SectionCard title="Top Performing">
             <div className={styles.topList}>
               {topVendors.map((v, i) => (
-                <div key={v._id || i} className={styles.topRow}>
+                <div key={v.id || i} className={styles.topRow}>
                   <span className={styles.topRank}>{i + 1}</span>
                   <div className={styles.topInfo}>
                     <span className={styles.topName}>{v.company || v.name}</span>

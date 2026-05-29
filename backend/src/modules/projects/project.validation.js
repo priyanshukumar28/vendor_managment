@@ -8,6 +8,16 @@ const createProjectSchema = Joi.object({
   vendorId: Joi.string().required(),
 
   deadline: Joi.date().optional(),
+
+  status: Joi.string().valid(
+    'PLANNING',
+    'ACTIVE',
+    'ON_HOLD',
+    'COMPLETED',
+    'CANCELLED'
+  ).optional(),
+
+  progress: Joi.number().min(0).max(100).optional()
 });
 
 const updateProjectSchema = Joi.object({
@@ -15,15 +25,20 @@ const updateProjectSchema = Joi.object({
 
   description: Joi.string().allow('', null),
 
-  status: Joi.string().valid(
-    'PENDING',
-    'IN_PROGRESS',
-    'ON_HOLD',
-    'COMPLETED',
-    'DELAYED'
-  ),
+  vendorId: Joi.string(),
 
   deadline: Joi.date(),
+
+  status: Joi.string().valid(
+    'PLANNING',
+    'ACTIVE',
+    'ON_HOLD',
+    'COMPLETED',
+    'DELAYED',
+    'CANCELLED'
+  ),
+
+  progress: Joi.number().min(0).max(100)
 });
 
 module.exports = {

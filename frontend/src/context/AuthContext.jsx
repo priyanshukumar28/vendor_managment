@@ -7,6 +7,7 @@ export const ROLES = {
   SUPER_ADMIN: 'SUPER_ADMIN',
   VENDOR_ADMIN: 'VENDOR_ADMIN',
   DEVELOPER: 'DEVELOPER',
+  BUSINESS_APPROVER: 'BUSINESS_APPROVER'
 }
 
 export const AuthProvider = ({ children }) => {

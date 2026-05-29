@@ -37,16 +37,50 @@ const validateCreateUser = [
     .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage("Password must contain at least one special character."),
 
   body("role")
-    .notEmpty().withMessage("Role is required.")
-    .isIn([ROLES.VENDOR_ADMIN, ROLES.DEVELOPER])
-    .withMessage(`Role must be one of: ${ROLES.VENDOR_ADMIN}, ${ROLES.DEVELOPER}.`),
+  .notEmpty()
+  .withMessage("Role is required.")
+  .isIn([
+    ROLES.SUPER_ADMIN,
+    ROLES.VENDOR_ADMIN,
+    ROLES.DEVELOPER,
+    ROLES.BUSINESS_APPROVER,
+  ])
+  .withMessage(
+    `Role must be one of: ${Object.values(ROLES).join(", ")}.`
+  ),
 
   body("vendorId")
-    .optional({ nullable: true })
-    .isString().withMessage("Vendor ID must be a string."),
+  .custom((value, { req }) => {
+    const role = req.body.role;
 
-  handleValidationErrors,
-];
+    // Vendor required
+    if (
+      role === ROLES.VENDOR_ADMIN ||
+      role === ROLES.DEVELOPER
+    ) {
+      if (!value) {
+        throw new Error(
+          "Vendor ID is required for Vendor Admin and Developer."
+        );
+      }
+    }
+
+    // Vendor should not be provided
+    if (
+      role === ROLES.SUPER_ADMIN ||
+      role === ROLES.BUSINESS_APPROVER
+    ) {
+      if (value) {
+        throw new Error(
+          "Vendor ID is not allowed for Super Admin or Business Approver."
+        );
+      }
+    }
+
+    return true;
+  }),
+
+]
 
 // ─── Update User ──────────────────────────────────────────────────────────────
 
@@ -67,9 +101,10 @@ const validateUpdateUser = [
     .normalizeEmail(),
 
   body("role")
-    .optional()
-    .isIn([ROLES.VENDOR_ADMIN, ROLES.DEVELOPER])
-    .withMessage(`Role must be one of: ${ROLES.VENDOR_ADMIN}, ${ROLES.DEVELOPER}.`),
+  .optional()
+  .isIn(Object.values(ROLES))
+  .withMessage(
+    `Role must be one of: ${Object.values(ROLES).join(", ")}.`),
 
   body()
     .custom((_, { req }) => {

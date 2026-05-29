@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import DashboardLayout from './layouts/DashboardLayout'
+import ProjectsPage from './pages/projects/ProjectsPage'
+import BusinessApproverDashboard from './pages/business-approver/BusinessApproverDashboard'
 
 // Pages
 import Login from './pages/auth/Login'
@@ -30,6 +32,8 @@ const App = () => (
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
 
+          <Route path="approval-workspace" element={<BusinessApproverDashboard />} />
+
           {/* Vendors — SUPER_ADMIN only */}
           <Route
             path="vendors"
@@ -51,7 +55,14 @@ const App = () => (
           />
 
           {/* Placeholder routes */}
-          <Route path="projects" element={<PlaceholderPage />} />
+          <Route
+            path="projects"
+            element={
+              <ProtectedRoute roles={['SUPER_ADMIN', 'VENDOR_ADMIN']}>
+                <ProjectsPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="tasks" element={<PlaceholderPage />} />
           <Route path="developers" element={<PlaceholderPage />} />
           <Route path="teams" element={<PlaceholderPage />} />

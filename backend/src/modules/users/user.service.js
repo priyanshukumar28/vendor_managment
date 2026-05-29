@@ -76,6 +76,27 @@ const createUser = async ({ name, email, password, role, vendorId }, caller) => 
     caller.role === ROLES.VENDOR_ADMIN ? caller.vendorId : vendorId || null;
 
   assertCanManage(caller, role, resolvedVendorId);
+  // Vendor required for vendor users
+if (
+  [ROLES.VENDOR_ADMIN, ROLES.DEVELOPER].includes(role) &&
+  !resolvedVendorId
+) {
+  throw createError(
+    `Vendor ID is required for ${role}.`,
+    400
+  );
+}
+
+// Vendor forbidden for global users
+if (
+  [ROLES.SUPER_ADMIN, ROLES.BUSINESS_APPROVER].includes(role) &&
+  resolvedVendorId
+) {
+  throw createError(
+    `${role} cannot be assigned to a vendor.`,
+    400
+  );
+}
 
   // VENDOR_ADMIN and DEVELOPER must belong to a vendor
   if ((role === ROLES.VENDOR_ADMIN || role === ROLES.DEVELOPER) && !resolvedVendorId) {
@@ -134,6 +155,19 @@ if (role === "DEVELOPER") {
 
   employeeId =
     `AA-DEV-${vendor.vendorCode}-${String(count + 1).padStart(3, "0")}`;
+}
+
+// BUSINESS APPROVER
+if (role === "BUSINESS_APPROVER") {
+
+  const count = await prisma.user.count({
+    where: {
+      role: "BUSINESS_APPROVER"
+    }
+  });
+
+  employeeId =
+    `AA-BA-${String(count + 1).padStart(4, "0")}`;
 }
 
 const user = await prisma.user.create({

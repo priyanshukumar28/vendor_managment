@@ -34,6 +34,19 @@ const NAV_CONFIG = {
     { label: 'Dashboard', icon: MdDashboard, path: '/dashboard' },
     { label: 'Tasks', icon: MdTask, path: '/tasks' },
   ],
+
+  [ROLES.BUSINESS_APPROVER]: [
+  {
+    label: 'Approvals',
+    icon: MdApproval,
+    path: '/approval-workspace'
+  },
+  {
+    label: 'Approval History',
+    icon: MdBarChart,
+    path: '/approval-history'
+  }
+  ],
 }
 
 const Sidebar = () => {
@@ -89,10 +102,20 @@ const Sidebar = () => {
 
       {/* Bottom */}
       <div className={styles.sidebarBottom}>
-        <NavLink to="/settings" className={({ isActive }) => `${styles.navItem} ${isActive ? styles.active : ''}`} title={collapsed ? 'Settings' : undefined}>
-          <MdSettings size={20} className={styles.navIcon} />
-          {!collapsed && <span className={styles.navLabel}>Settings</span>}
-        </NavLink>
+
+      {user?.role !== ROLES.BUSINESS_APPROVER && (
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              `${styles.navItem} ${isActive ? styles.active : ''}`
+            }
+          >
+            <MdSettings size={20} className={styles.navIcon} />
+            {!collapsed && (
+              <span className={styles.navLabel}>Settings</span>
+            )}
+          </NavLink>
+        )}
         <button className={`${styles.navItem} ${styles.logoutBtn}`} onClick={handleLogout} title={collapsed ? 'Logout' : undefined}>
           <MdLogout size={20} className={styles.navIcon} />
           {!collapsed && <span className={styles.navLabel}>Logout</span>}

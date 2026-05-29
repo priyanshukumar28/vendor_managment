@@ -5,6 +5,7 @@ const { authRouter, authenticate, authorize, ROLES } = require("./modules/auth")
 const { vendorRouter } = require("./modules/vendors");
 const { userRouter } = require("./modules/users");
 const { projectRouter } = require('./modules/projects');
+const approvalRoutes = require('./modules/approvals/approval.routes')
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
@@ -30,6 +31,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/projects', projectRouter);
+app.use('/api/approvals', approvalRoutes);
 
 // ─── Swagger ───────────────────────────────────────
 

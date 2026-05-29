@@ -14,6 +14,8 @@ const createProject = async ({
   description,
   vendorId,
   deadline,
+  status,
+  progress,
 }) => {
 
   // Check Vendor
@@ -38,7 +40,13 @@ const createProject = async ({
       name,
       description,
       vendorId,
-      deadline,
+
+      // Normalize date before Prisma
+      deadline: deadline ? new Date(deadline) : null,
+
+      status: status || 'PLANNING',
+      progress: progress || 0,
+
       projectDisplayId,
     },
 
@@ -49,6 +57,7 @@ const createProject = async ({
 
   return project;
 };
+
 
 // Get All Projects
 const getProjects = async () => {
@@ -103,7 +112,14 @@ const updateProject = async (id, data) => {
 
   return prisma.project.update({
     where: { id },
-    data,
+    data: {
+      ...data,
+
+      // Convert date string to Date object
+      deadline: data.deadline
+        ? new Date(data.deadline)
+        : null,
+    },
   });
 };
 

@@ -54,6 +54,10 @@ const Login = () => {
         navigate('/dashboard', { replace: true })
         break
 
+      case 'BUSINESS_APPROVER':
+        navigate('/approval-workspace', { replace: true })
+        break
+
       default:
         navigate('/dashboard', { replace: true })
     }
@@ -134,20 +138,6 @@ const Login = () => {
           <div className={styles.formHeader}>
             <h2>Welcome Back</h2>
             <p>Login to manage vendors, projects and development operations on the Across Assist platform.</p>
-          </div>
-
-          {/* Role Tabs */}
-          <div className={styles.roleTabs}>
-            {ROLES.map(r => (
-              <button
-                key={r.key}
-                type="button"
-                className={`${styles.roleTab} ${selectedRole === r.key ? styles.roleActive : ''}`}
-                onClick={() => setSelectedRole(r.key)}
-              >
-                {r.label}
-              </button>
-            ))}
           </div>
 
           {/* Form */}
